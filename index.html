@@ -79,43 +79,47 @@
 </div>
 
 <script>
-  function sendMessage() {
+  async function generateGeminiResponse(userInput) {
+    try {
+      const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyBji7uPMpb6UR_TlQj5jnGvRT5AARPWTSk", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: userInput }] }]
+        })
+      });
+
+      const data = await response.json();
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || "No response received.";
+    } catch (error) {
+      console.error("Error calling Gemini API:", error);
+      return "Oops! Something went wrong while contacting Gemini.";
+    }
+  }
+
+  async function sendMessage() {
     const input = document.getElementById('userInput');
     const chatBox = document.getElementById('chatBox');
     const userText = input.value.trim();
     if (!userText) return;
 
-    // Render user message
     const userMsg = document.createElement('div');
     userMsg.className = 'message user';
     userMsg.textContent = userText;
     chatBox.appendChild(userMsg);
 
-    // Simulate AI response (replace with real API call later)
     const aiMsg = document.createElement('div');
     aiMsg.className = 'message ai';
-    aiMsg.textContent = generateAIResponse(userText);
+    aiMsg.textContent = "Thinking...";
     chatBox.appendChild(aiMsg);
 
     input.value = '';
     chatBox.scrollTop = chatBox.scrollHeight;
-  }
 
-  function generateAIResponse(input) {
-    const lower = input.toLowerCase();
-    if (lower.includes('nba')) {
-      return "Looking for NBA advice? 🏀 I'd recommend starting Jayson Tatum this week — he's averaging 28+ points.";
-    } else if (lower.includes('mlb')) {
-      return "MLB tip ⚾: Shohei Ohtani is a must-start in both pitching and hitting formats.";
-    } else if (lower.includes('nhl')) {
-      return "NHL insight 🏒: Connor McDavid is on fire — start him if you’ve got him!";
-    } else if (lower.includes('trivia')) {
-      return "Trivia time! 🧠 Which MLB team has the most World Series titles?";
-    } else if (lower.includes('draft order')) {
-      return "Here’s a randomized draft order: Team C, Team A, Team D, Team B.";
-    } else {
-      return "Great question! I can help with fantasy advice across NFL, NBA, MLB, and NHL. Try asking about a specific sport or player.";
-    }
+    const aiResponse = await generateGeminiResponse(userText);
+    aiMsg.textContent = aiResponse;
   }
 </script>
 
