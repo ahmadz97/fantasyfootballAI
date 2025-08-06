@@ -87,12 +87,16 @@
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: userInput }] }]
+          contents: [{ parts: [{ text: userInput }] }],
+          generationConfig: {
+            maxOutputTokens: 1000
+          }
         })
       });
 
       const data = await response.json();
-      return data.candidates?.[0]?.content?.parts?.[0]?.text || "No response received.";
+      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      return reply || "Gemini didn’t return a response. Try rephrasing your question.";
     } catch (error) {
       console.error("Error calling Gemini API:", error);
       return "Oops! Something went wrong while contacting Gemini.";
