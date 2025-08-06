@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fantasy Sports Chat Assistant</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+    .chat-container {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .chat-header {
+      background-color: #0078D4;
+      color: white;
+      padding: 15px;
+      font-size: 1.2em;
+    }
+    .chat-box {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      height: 450px;
+    }
+    .message {
+      margin-bottom: 15px;
+      line-height: 1.4;
+    }
+    .user {
+      text-align: right;
+      color: #0078D4;
+    }
+    .ai {
+      text-align: left;
+      color: #333;
+    }
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #ccc;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 15px;
+      border: none;
+      font-size: 1em;
+    }
+    button {
+      background-color: #0078D4;
+      color: white;
+      border: none;
+      padding: 15px 20px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body>
+
+<div class="chat-container">
+  <div class="chat-header">Fantasy Sports Assistant 🧠🏀⚾🏈🏒</div>
+  <div class="chat-box" id="chatBox">
+    <div class="message ai">Welcome Ahmad! Ask me anything about fantasy sports — football, basketball, baseball, or hockey. I can help with draft strategy, lineup advice, or trivia challenges.</div>
+  </div>
+  <div class="chat-input">
+    <input type="text" id="userInput" placeholder="Type your question..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+  function sendMessage() {
+    const input = document.getElementById('userInput');
+    const chatBox = document.getElementById('chatBox');
+    const userText = input.value.trim();
+    if (!userText) return;
+
+    // Render user message
+    const userMsg = document.createElement('div');
+    userMsg.className = 'message user';
+    userMsg.textContent = userText;
+    chatBox.appendChild(userMsg);
+
+    // Simulate AI response (replace with real API call later)
+    const aiMsg = document.createElement('div');
+    aiMsg.className = 'message ai';
+    aiMsg.textContent = generateAIResponse(userText);
+    chatBox.appendChild(aiMsg);
+
+    input.value = '';
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  function generateAIResponse(input) {
+    const lower = input.toLowerCase();
+    if (lower.includes('nba')) {
+      return "Looking for NBA advice? 🏀 I'd recommend starting Jayson Tatum this week — he's averaging 28+ points.";
+    } else if (lower.includes('mlb')) {
+      return "MLB tip ⚾: Shohei Ohtani is a must-start in both pitching and hitting formats.";
+    } else if (lower.includes('nhl')) {
+      return "NHL insight 🏒: Connor McDavid is on fire — start him if you’ve got him!";
+    } else if (lower.includes('trivia')) {
+      return "Trivia time! 🧠 Which MLB team has the most World Series titles?";
+    } else if (lower.includes('draft order')) {
+      return "Here’s a randomized draft order: Team C, Team A, Team D, Team B.";
+    } else {
+      return "Great question! I can help with fantasy advice across NFL, NBA, MLB, and NHL. Try asking about a specific sport or player.";
+    }
+  }
+</script>
+
+</body>
+</html>
